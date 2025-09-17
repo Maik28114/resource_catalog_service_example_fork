@@ -1,0 +1,21 @@
+services:
+  mongodb: # starten des 1. Container
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  mongo_express: # danach starten des 2. Container, der Abhängig vom 1. Container ist
+    image: mongo-express:latest
+    container_name: mongo_express
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_URL=mongodb://mongodb:27017 # statt localhost
+    depends_on:
+      - mongodb
+
+volumes:
+  mongodb_data:
